@@ -1,0 +1,18 @@
+{
+  "name": "DAILYKIT - Step-by-Step Learning",
+  "short_name": "DAILYKIT",
+  "description": "Learn Languages, Science, Biology, AI, and History step by step every day.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#080d1b",
+  "theme_color": "#080d1b",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='110' fill='%23080d1b'/%3E%3Crect x='24' y='24' width='464' height='464' rx='92' fill='none' stroke='%2316c7e8' stroke-width='20'/%3E%3Ctext x='256' y='295' font-family='Arial,sans-serif' font-size='190' font-weight='900' fill='%2316c7e8' text-anchor='middle'%3EDK%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
