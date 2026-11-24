@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d1b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="DAILYKIT - Step-by-Step Language Lessons, Science, Biology, AI and History App.">
+<link rel="manifest" href="manifest.json">
+<title>DAILYKIT | Step-by-Step Learning App</title>
+<style>
+:root{
+  --bg:#080d1b;
+  --panel:#111a2e;
+  --card:#14213a;
+  --text:#f4f7ff;
+  --muted:#9eacc5;
+  --cyan:#16c7e8;
+  --purple:#8667ff;
+  --green:#20d99a;
+  --red:#ff647c;
+  --amber:#ffbe3b;
+  --border:rgba(255,255,255,.09);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.container{
+  width:min(1100px,92%);
+  margin:auto;
+}
+header{
+  border-bottom:1px solid var(--border);
+  background:rgba(8,13,27,.95);
+  position:sticky;
+  top:0;
+  z-index:20;
+  backdrop-filter:blur(15px);
+}
+.nav{
+  min-height:66px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+}
+.logo{
+  font-size:23px;
+  font-weight:900;
+  letter-spacing:1px;
+  color:var(--cyan);
+}
+.logo span{color:white}
+.nav a{
+  color:var(--muted);
+  text-decoration:none;
+  margin-left:14px;
+  font-size:13.5px;
+}
+.nav a:hover{color:var(--cyan)}
+
+/* TOP STREAK & SCORE BAR */
+#arena-top-bar{
+  background:linear-gradient(90deg,#0b1529,#121f3a);
+  border-bottom:1px solid rgba(22,199,232,0.22);
+  padding:9px 0;
+  font-size:12.5px;
+}
+.arena-stats{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.stat-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 10px;
+  border-radius:999px;
+  background:rgba(20,33,58,0.9);
+  border:1px solid rgba(255,255,255,0.08);
+  color:var(--text);
+  font-weight:700;
+}
+.stat-pill span{color:var(--cyan)}
+.install-pill{
+  padding:5px 12px;
+  border-radius:999px;
+  border:1px solid var(--cyan);
+  background:rgba(22,199,232,.14);
+  color:var(--cyan);
+  font-weight:700;
+  font-size:12px;
+  display:none;
+}
+
+.hero{
+  text-align:center;
+  padding:50px 15px 34px;
+  background:radial-gradient(ellipse at 50% 0%,rgba(22,199,232,.16),transparent 60%);
+}
+.eyebrow{
+  color:var(--cyan);
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:3px;
+}
+.hero h1{
+  font-size:clamp(34px,6.5vw,60px);
+  line-height:1.1;
+  margin:16px 0;
+}
+.gradient{
+  background:linear-gradient(90deg,var(--cyan),#a68aff);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.hero p{
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.7;
+  max-width:680px;
+  margin:auto;
+}
+.primary-btn{
+  border:0;
+  border-radius:10px;
+  padding:12px 20px;
+  color:#07111b;
+  font-weight:bold;
+  background:var(--cyan);
+  transition:.2s;
+}
+.primary-btn:hover{filter:brightness(1.1)}
+.secondary-btn{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:11px 16px;
+  color:var(--text);
+  background:var(--card);
+  font-weight:bold;
+}
+.secondary-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+
+section{padding:36px 0}
+.section-title{font-size:26px;margin:0 0 8px}
+.section-subtitle{color:var(--muted);margin:0 0 22px;line-height:1.6}
+
+/* LANGUAGE HUB */
+.lang-box{
+  background:var(--panel);
+  border:1px solid rgba(134,103,255,.35);
+  border-radius:18px;
+  padding:24px;
+}
+.lang-picker-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+.lang-choice-btn{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:18px 20px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  font-size:17px;
+  font-weight:800;
+  transition:.18s;
+}
+.lang-choice-btn:hover{
+  border-color:var(--cyan);
+  transform:translateY(-2px);
+}
+.lang-prog-badge{
+  font-size:12px;
+  color:var(--green);
+  background:rgba(32,217,154,.12);
+  padding:4px 9px;
+  border-radius:999px;
+}
+
+#languageLessonView{display:none}
+.lesson-top-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
+}
+.active-lang-title{
+  font-size:18px;
+  font-weight:800;
+  color:var(--cyan);
+}
+
+.lesson-path{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:18px;
+}
+.lesson-step-btn{
+  text-align:left;
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(8,13,27,.55);
+  color:var(--muted);
+  transition:.15s;
+}
+.lesson-step-btn small{
+  display:block;
+  font-size:10.5px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:var(--cyan);
+  margin-bottom:4px;
+  font-weight:800;
+}
+.lesson-step-btn strong{
+  display:block;
+  font-size:13.5px;
+  color:var(--text);
+}
+.lesson-step-btn:hover{
+  border-color:var(--purple);
+}
+.lesson-step-btn.active{
+  background:var(--card);
+  border-color:var(--green);
+  box-shadow:inset 0 0 0 1px rgba(32,217,154,.35);
+}
+
+.lang-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:22px;
+  margin-bottom:16px;
+}
+.lang-top-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:10px;
+}
+.lang-badge{
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.2px;
+  color:var(--cyan);
+  text-transform:uppercase;
+}
+.lang-phrase{
+  font-size:clamp(24px,4.5vw,34px);
+  font-weight:800;
+  color:var(--text);
+  margin:8px 0;
+}
+.lang-phonetic{
+  color:#b9c6e0;
+  font-size:14px;
+  margin-bottom:8px;
+}
+.lang-meaning{
+  color:var(--green);
+  font-size:16px;
+  font-weight:700;
+}
+.lang-example{
+  margin-top:12px;
+  padding:12px 14px;
+  border-radius:11px;
+  background:rgba(8,13,27,.45);
+  border-left:3px solid var(--purple);
+  font-size:13.5px;
+  line-height:1.55;
+  color:#dce4f5;
+}
+.lang-example small{
+  display:block;
+  color:var(--muted);
+  margin-top:4px;
+}
+.lang-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+.lang-quiz-box{
+  background:rgba(8,13,27,.55);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:18px;
+}
+.lang-quiz-title{
+  font-size:14px;
+  font-weight:700;
+  color:var(--cyan);
+  margin-bottom:10px;
+}
+.lang-quiz-q{
+  font-size:16px;
+  margin-bottom:12px;
+}
+
+/* QUIZ ARENA */
+.quiz-box{
+  background:var(--panel);
+  border:1px solid rgba(22,199,232,.28);
+  border-radius:18px;
+  padding:24px;
+}
+.quiz-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
+}
+.quiz-topic-select{
+  padding:9px 14px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+}
+.quiz-meta{
+  display:flex;
+  gap:14px;
+  font-size:13px;
+  color:var(--muted);
+  font-weight:700;
+}
+.quiz-question{
+  font-size:20px;
+  line-height:1.45;
+  margin:14px 0 18px;
+  color:var(--text);
+}
+.quiz-options{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+.quiz-opt{
+  text-align:left;
+  padding:14px 16px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  font-size:14px;
+  transition:.15s;
+}
+.quiz-opt:hover:not(:disabled){
+  border-color:var(--cyan);
+  transform:translateY(-2px);
+}
+.quiz-opt.correct{
+  border-color:var(--green);
+  background:rgba(32,217,154,.16);
+  color:var(--green);
+}
+.quiz-opt.wrong{
+  border-color:var(--red);
+  background:rgba(255,100,124,.16);
+  color:var(--red);
+}
+.quiz-feedback{
+  margin-top:16px;
+  padding:13px 15px;
+  border-radius:11px;
+  background:var(--card);
+  border:1px solid var(--border);
+  font-size:14px;
+  line-height:1.6;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.status-box{
+  margin-top:12px;
+  padding:11px 13px;
+  border-radius:10px;
+  background:var(--card);
+  border:1px solid var(--border);
+  font-size:13.5px;
+  line-height:1.5;
+}
+.positive{color:var(--green) !important}
+.negative{color:var(--red) !important}
+
+/* SUBJECTS GRID */
+.categories{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+.category{
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:22px;
+  border-radius:16px;
+  transition:.2s;
+  cursor:pointer;
+}
+.category:hover{
+  transform:translateY(-4px);
+  border-color:var(--cyan);
+}
+.category .emoji{font-size:28px}
+.category h3{margin:13px 0 7px;font-size:17px}
+.category p{color:var(--muted);font-size:13px;line-height:1.5;margin:0}
+
+/* ARTICLES GRID */
+.articles{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+.article{
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:21px;
+  border-radius:15px;
+  cursor:pointer;
+  transition:.2s;
+}
+.article:hover{border-color:var(--purple)}
+.article-tag{
+  color:var(--cyan);
+  font-size:11px;
+  letter-spacing:1px;
+  font-weight:bold;
+}
+.article h3{font-size:17px;line-height:1.4}
+.article p{color:var(--muted);font-size:13px;line-height:1.6}
+.read-more{color:var(--cyan);font-size:13px;font-weight:bold}
+.results-info{color:var(--muted);font-size:13px;margin-bottom:15px}
+.ai-panel{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:25px;
+}
+.ai-panel p{color:var(--muted);line-height:1.7}
+footer{
+  border-top:1px solid var(--border);
+  padding:32px 0;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
+#articleDetail{display:none}
+.back-btn{
+  background:var(--card);
+  color:var(--cyan);
+  border:1px solid var(--border);
+  padding:10px 15px;
+  border-radius:9px;
+  margin-bottom:20px;
+}
+
+@media(max-width:780px){
+  .lesson-path,.categories,.articles,.quiz-options{grid-template-columns:repeat(2,1fr)}
+  .nav a{margin-left:10px;font-size:12.5px}
+}
+@media(max-width:560px){
+  .lang-picker-grid,.lesson-path,.categories,.articles,.quiz-options{grid-template-columns:1fr}
+  .nav{min-height:58px}
+  .nav a{margin-left:8px;font-size:12px}
+  .logo{font-size:19px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="container nav">
+    <div class="logo">DAILY<span>KIT</span></div>
+    <nav>
+      <a href="#language-lab">Languages</a>
+      <a href="#quiz-arena">Quiz</a>
+      <a href="#subjects">Subjects</a>
+      <a href="#articles">Library</a>
+    </nav>
+  </div>
+</header>
+
+<div id="arena-top-bar">
+  <div class="container" style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+    <div class="arena-stats">
+      <div class="stat-pill">🔥 Streak: <span id="streakCount">1</span>d</div>
+      <div class="stat-pill">⭐ Points: <span id="quizPoints">0</span></div>
+      <div class="stat-pill">🏆 Level: <span id="userLevel">1</span></div>
+    </div>
+    <button id="installAppBtn" class="install-pill">📲 Install App</button>
+  </div>
+</div>
+
+<main>
+<div id="homePage">
+
+  <div class="hero">
+    <div class="eyebrow">LANGUAGES • SCIENCE • BIOLOGY • AI • HISTORY</div>
+    <h1>Start From Step One.<br><span class="gradient">Learn Something Real Daily.</span></h1>
+    <p>Pick a language to enter its step-by-step lessons from the beginning, test yourself in Science, Biology, AI, and History, and level up every day.</p>
+  </div>
+
+  <div class="container">
+
+    <!-- 1. PICK A LANGUAGE & GO STEP BY STEP -->
+    <section id="language-lab">
+      <h2 class="section-title">1. Pick a Language &amp; Go Step by Step</h2>
+      <p class="section-subtitle" id="langSectionDesc">Tap a language button below to go inside and start lessons from Step 1.</p>
+
+      <div class="lang-box">
+        <!-- LANGUAGE BUTTONS ONLY -->
+        <div id="languagePickerView" class="lang-picker-grid">
+          <button class="lang-choice-btn" onclick="enterLanguage('it')">
+            <span>🇮🇹 Italian</span>
+            <span class="lang-prog-badge" id="prog-it">0/3 Steps</span>
+          </button>
+          <button class="lang-choice-btn" onclick="enterLanguage('es')">
+            <span>🇪🇸 Spanish</span>
+            <span class="lang-prog-badge" id="prog-es">0/3 Steps</span>
+          </button>
+          <button class="lang-choice-btn" onclick="enterLanguage('fr')">
+            <span>🇫🇷 French</span>
+            <span class="lang-prog-badge" id="prog-fr">0/3 Steps</span>
+          </button>
+          <button class="lang-choice-btn" onclick="enterLanguage('ja')">
+            <span>🇯🇵 Japanese</span>
+            <span class="lang-prog-badge" id="prog-ja">0/3 Steps</span>
+          </button>
+        </div>
+
+        <!-- INSIDE SELECTED LANGUAGE -->
+        <div id="languageLessonView">
+          <div class="lesson-top-bar">
+            <div class="active-lang-title" id="activeLangHeading">🇮🇹 ITALIAN • STEP 1</div>
+            <button class="secondary-btn" onclick="backToLanguages()">← All Languages</button>
+          </div>
+
+          <div class="lesson-path">
+            <button class="lesson-step-btn active" id="stepBtn0" onclick="chooseStep(0, this)">
+              <small id="stepTag0">Step 1 • Start</small>
+              <strong>Hello &amp; Hi</strong>
+            </button>
+            <button class="lesson-step-btn" id="stepBtn1" onclick="chooseStep(1, this)">
+              <small id="stepTag1">Step 2 • Basics</small>
+              <strong>Please &amp; Thanks</strong>
+            </button>
+            <button class="lesson-step-btn" id="stepBtn2" onclick="chooseStep(2, this)">
+              <small id="stepTag2">Step 3 • Everyday</small>
+              <strong>Food &amp; Bye</strong>
+            </button>
+          </div>
+
+          <div class="lang-card">
+            <div class="lang-top-row">
+              <span class="lang-badge" id="langTopicBadge">STEP 1 • CARD 1 OF 3</span>
+              <span class="lang-badge" id="langNameBadge" style="color:#a68aff">ITALIAN</span>
+            </div>
+            <div class="lang-phrase" id="langPhraseText">Ciao!</div>
+            <div class="lang-phonetic" id="langPhoneticText">Pronunciation: CHOW!</div>
+            <div class="lang-meaning" id="langMeaningText">Hi! / Bye!</div>
+
+            <div class="lang-example">
+              <div id="langExampleTarget">"Ciao Anna!"</div>
+              <small id="langExampleTrans">"Hi Anna!"</small>
+            </div>
+
+            <div class="lang-actions">
+              <button class="primary-btn" onclick="speakCurrentPhrase()">🔊 Listen</button>
+              <button class="secondary-btn" onclick="prevPhrase()">← Prev</button>
+              <button class="secondary-btn" onclick="nextPhrase()">Next →</button>
+            </div>
+          </div>
+
+          <div class="lang-quiz-box">
+            <div class="lang-quiz-title">STEP RECALL CHECK (+15 PTS)</div>
+            <div class="lang-quiz-q" id="langQuizPrompt">Loading recall question...</div>
+            <div class="quiz-options" id="langQuizOptions"></div>
+            <div class="status-box" id="langQuizFeedback">Tap the matching meaning to complete this step and earn points.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. QUIZ ARENA -->
+    <section id="quiz-arena">
+      <h2 class="section-title">2. Science, Biology, AI &amp; History Quiz</h2>
+      <p class="section-subtitle">Switch subjects anytime and earn points for every correct answer.</p>
+
+      <div class="quiz-box">
+        <div class="quiz-top">
+          <select id="quizTopic" class="quiz-topic-select" onchange="startQuizRound()">
+            <option value="biology">🧬 Biology</option>
+            <option value="science">🔬 Science</option>
+            <option value="ai">🤖 Artificial Intelligence (AI)</option>
+            <option value="history">🏛️ History</option>
+          </select>
+          <div class="quiz-meta">
+            <span id="quizProgress">Question 1 / 3</span>
+            <span id="quizRoundScore">Round Score: 0</span>
+          </div>
+        </div>
+
+        <div class="quiz-question" id="quizQuestionText">Loading question...</div>
+        <div class="quiz-options" id="quizOptionsBox"></div>
+
+        <div class="quiz-feedback" id="quizFeedback">
+          <span>Select an answer to earn points.</span>
+          <button class="secondary-btn" id="nextQuizBtn" onclick="nextQuestion()" style="display:none">Next Question →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. CORE SUBJECTS -->
+    <section id="subjects">
+      <h2 class="section-title">3. Core Subjects</h2>
+      <p class="section-subtitle">Click any subject to filter articles in the library below.</p>
+
+      <div class="categories">
+        <div class="category" onclick="filterCategory('all')">
+          <div class="emoji">✨</div>
+          <h3>All Subjects</h3>
+          <p>View all articles across Language, Science, Biology, AI &amp; History.</p>
+        </div>
+        <div class="category" onclick="filterCategory('language')">
+          <div class="emoji">🗣️</div>
+          <h3>Language</h3>
+          <p>Step-by-step lessons, listening, and simple recall.</p>
+        </div>
+        <div class="category" onclick="filterCategory('science')">
+          <div class="emoji">🔬</div>
+          <h3>Science</h3>
+          <p>Light, water, matter, and everyday science.</p>
+        </div>
+        <div class="category" onclick="filterCategory('biology')">
+          <div class="emoji">🧬</div>
+          <h3>Biology</h3>
+          <p>Plants, seeds, animals, and living nature.</p>
+        </div>
+        <div class="category" onclick="filterCategory('ai')">
+          <div class="emoji">🤖</div>
+          <h3>Artificial Intelligence</h3>
+          <p>How computers learn patterns from examples.</p>
+        </div>
+        <div class="category" onclick="filterCategory('history')">
+          <div class="emoji">🏛️</div>
+          <h3>History</h3>
+          <p>Early writing, travel, and life long ago.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. KNOWLEDGE LIBRARY -->
+    <section id="articles">
+      <h2 class="section-title">4. Knowledge Library</h2>
+      <p class="section-subtitle">Focused articles on Language, Science, Biology, AI, and History.</p>
+
+      <div class="results-info" id="resultCount">All articles</div>
+
+      <div class="articles" id="articleGrid">
+        <article class="article" data-category="language"
+          data-title="How Step-by-Step Lessons Help Beginners"
+          data-description="Starting from Step 1 with simple greetings and short everyday words makes learning calm and clear. Listening with audio and testing recall right after helps build memory without overwhelm.">
+          <div class="article-tag">LANGUAGE</div>
+          <h3>How Step-by-Step Lessons Help Beginners</h3>
+          <p>Why starting small from Step 1 works best.</p>
+          <div class="read-more">Read Article →</div>
+        </article>
+
+        <article class="article" data-category="science"
+          data-title="How Sunlight Reaches Earth"
+          data-description="The Sun is a huge glowing star in space. Light travels across space and reaches Earth in about 8 minutes, giving us daylight and warmth.">
+          <div class="article-tag">SCIENCE</div>
+          <h3>How Sunlight Reaches Earth</h3>
+          <p>How light from the Sun travels to our planet.</p>
+          <div class="read-more">Read Article →</div>
+        </article>
+
+        <article class="article" data-category="biology"
+          data-title="How a Seed Grows Into a Plant"
+          data-description="Inside every seed is a tiny young plant with stored food. With water, warmth, and soil, it grows roots downward and leaves upward.">
+          <div class="article-tag">BIOLOGY</div>
+          <h3>How a Seed Grows Into a Plant</h3>
+          <p>Water, warmth, and soil help seeds sprout and grow.</p>
+          <div class="read-more">Read Article →</div>
+        </article>
+
+        <article class="article" data-category="ai"
+          data-title="How AI Learns From Examples"
+          data-description="Artificial Intelligence (AI) uses computer programs that spot patterns from many examples—much like learning what a dog looks like after seeing many dogs.">
+          <div class="article-tag">ARTIFICIAL INTELLIGENCE</div>
+          <h3>How AI Learns From Examples</h3>
+          <p>A simple look at how AI finds patterns in examples.</p>
+          <div class="read-more">Read Article →</div>
+        </article>
+
+        <article class="article" data-category="history"
+          data-title="Writing Before Paper Was Invented"
+          data-description="Long before paper and books existed, people carved signs and pictures on clay, stone, and leaves to keep records and share stories.">
+          <div class="article-tag">HISTORY</div>
+          <h3>Writing Before Paper Was Invented</h3>
+          <p>How early people recorded ideas on clay and stone.</p>
+          <div class="read-more">Read Article →</div>
+        </article>
+
+        <article class="article" data-category="biology"
+          data-title="How Bees Help Flowers and Fruit"
+          data-description="When bees visit flowers for sweet nectar, pollen sticks to their bodies and moves to other flowers, helping plants grow seeds and fruit.">
+          <div class="article-tag">BIOLOGY</div>
+          <h3>How Bees Help Flowers and Fruit</h3>
+          <p>How pollination connects bees, flowers, and fruit.</p>
+          <div class="read-more">Read Article →</div>
+        </article>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ARTICLE DETAIL VIEW -->
+<div class="container" id="articleDetail">
+  <section>
+    <button class="back-btn" onclick="closeArticle()">← Back to DAILYKIT</button>
+    <div class="eyebrow" id="detailCategory"></div>
+    <h1 id="detailTitle"></h1>
+    <div class="ai-panel">
+      <p id="detailDescription"></p>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="logo">DAILY<span>KIT</span></div>
+    <p>Languages • Science • Biology • AI • History</p>
+    <p>© 2026 DAILYKIT. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+// PWA SERVICE WORKER & INSTALL PROMPT
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js").catch(() => {});
+}
+
+let deferredPrompt = null;
+const installBtn = document.getElementById("installAppBtn");
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  installBtn.style.display = "inline-block";
+});
+installBtn.addEventListener("click", async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+  installBtn.style.display = "none";
+});
+
+// STATS & PROGRESS
+const stats = {
+  points: parseInt(localStorage.getItem("dk_points") || "0", 10),
+  streak: parseInt(localStorage.getItem("dk_streak") || "1", 10),
+  completed: JSON.parse(localStorage.getItem("dk_completed_steps") || "{}")
+};
+
+function updateTopStats() {
+  document.getElementById("quizPoints").textContent = stats.points;
+  document.getElementById("streakCount").textContent = stats.streak;
+  document.getElementById("userLevel").textContent = Math.floor(stats.points / 50) + 1;
+  localStorage.setItem("dk_points", String(stats.points));
+  localStorage.setItem("dk_streak", String(stats.streak));
+  localStorage.setItem("dk_completed_steps", JSON.stringify(stats.completed));
+  refreshLangBadges();
+}
+
+function refreshLangBadges() {
+  ["it", "es", "fr", "ja"].forEach((code) => {
+    const arr = stats.completed[code] || [];
+    const el = document.getElementById(`prog-${code}`);
+    if (el) el.textContent = `${arr.length}/3 Steps`;
+  });
+}
+
+// 1. LANGUAGE BUTTONS -> STEP-BY-STEP LESSONS
+const courses = {
+  it: {
+    flag: "🇮🇹",
+    name: "ITALIAN",
+    voice: "it-IT",
+    steps: [
+      [
+        { word: "Ciao!", say: "CHOW!", meaning: "Hi! / Bye!", ex: "Ciao Anna!", exSub: "Hi Anna!" },
+        { word: "Buongiorno!", say: "bwohn-JOHR-noh", meaning: "Good morning!", ex: "Buongiorno a tutti!", exSub: "Good morning everyone!" },
+        { word: "Come stai?", say: "KOH-meh STAI", meaning: "How are you?", ex: "Ciao, come stai?", exSub: "Hi, how are you?" }
+      ],
+      [
+        { word: "Grazie!", say: "GRAH-tsyeh", meaning: "Thank you!", ex: "Grazie mille!", exSub: "Thank you so much!" },
+        { word: "Per favore", say: "pehr fah-VOH-reh", meaning: "Please", ex: "Acqua, per favore.", exSub: "Water, please." },
+        { word: "Prego!", say: "PREH-goh", meaning: "You're welcome!", ex: "Grazie! — Prego!", exSub: "Thank you! — You're welcome!" }
+      ],
+      [
+        { word: "Una mela", say: "OO-nah MEH-lah", meaning: "An apple", ex: "Mangio una mela.", exSub: "I eat an apple." },
+        { word: "Acqua", say: "AHK-wah", meaning: "Water", ex: "Voglio acqua.", exSub: "I want water." },
+        { word: "A domani!", say: "ah doh-MAH-nee", meaning: "See you tomorrow!", ex: "Ciao, a domani!", exSub: "Bye, see you tomorrow!" }
+      ]
+    ]
+  },
+  es: {
+    flag: "🇪🇸",
+    name: "SPANISH",
+    voice: "es-ES",
+    steps: [
+      [
+        { word: "¡Hola!", say: "OH-lah!", meaning: "Hello! / Hi!", ex: "¡Hola, amigo!", exSub: "Hi, friend!" },
+        { word: "¡Buenos días!", say: "BWEH-nohs DEE-ahs", meaning: "Good morning!", ex: "¡Buenos días!", exSub: "Good morning!" },
+        { word: "¿Cómo estás?", say: "KOH-moh ehs-TAHS", meaning: "How are you?", ex: "¡Hola! ¿Cómo estás?", exSub: "Hi! How are you?" }
+      ],
+      [
+        { word: "¡Gracias!", say: "GRAH-syahs", meaning: "Thank you!", ex: "¡Muchas gracias!", exSub: "Thank you very much!" },
+        { word: "Por favor", say: "pohr fah-VOHR", meaning: "Please", ex: "Agua, por favor.", exSub: "Water, please." },
+        { word: "De nada", say: "deh NAH-dah", meaning: "You're welcome", ex: "¡Gracias! — De nada.", exSub: "Thanks! — You're welcome." }
+      ],
+      [
+        { word: "Una manzana", say: "OO-nah mahn-SAH-nah", meaning: "An apple", ex: "Como una manzana.", exSub: "I eat an apple." },
+        { word: "Agua", say: "AH-gwah", meaning: "Water", ex: "Quiero agua.", exSub: "I want water." },
+        { word: "¡Hasta mañana!", say: "AHS-tah mah-NYAH-nah", meaning: "See you tomorrow!", ex: "¡Adiós, hasta mañana!", exSub: "Bye, see you tomorrow!" }
+      ]
+    ]
+  },
+  fr: {
+    flag: "🇫🇷",
+    name: "FRENCH",
+    voice: "fr-FR",
+    steps: [
+      [
+        { word: "Bonjour !", say: "bohn-ZHOOR", meaning: "Hello! / Good day!", ex: "Bonjour Léo !", exSub: "Hello Leo!" },
+        { word: "Salut !", say: "sah-LOO", meaning: "Hi! / Bye!", ex: "Salut tout le monde !", exSub: "Hi everyone!" },
+        { word: "Ça va ?", say: "sah VAH", meaning: "How's it going?", ex: "Salut, ça va ?", exSub: "Hi, how's it going?" }
+      ],
+      [
+        { word: "Merci !", say: "mehr-SEE", meaning: "Thank you!", ex: "Merci beaucoup !", exSub: "Thank you very much!" },
+        { word: "S'il vous plaît", say: "seel voo pleh", meaning: "Please", ex: "Un verre d'eau, s'il vous plaît.", exSub: "A glass of water, please." },
+        { word: "De rien !", say: "duh RYEHN", meaning: "You're welcome!", ex: "Merci ! — De rien !", exSub: "Thanks! — You're welcome!" }
+      ],
+      [
+        { word: "Une pomme", say: "oon pohm", meaning: "An apple", ex: "Je mange une pomme.", exSub: "I eat an apple." },
+        { word: "De l'eau", say: "duh LOH", meaning: "Water", ex: "Je veux de l'eau.", exSub: "I want water." },
+        { word: "À demain !", say: "ah duh-MEHN", meaning: "See you tomorrow!", ex: "Salut, à demain !", exSub: "Bye, see you tomorrow!" }
+      ]
+    ]
+  },
+  ja: {
+    flag: "🇯🇵",
+    name: "JAPANESE",
+    voice: "ja-JP",
+    steps: [
+      [
+        { word: "こんにちは", say: "Konnichiwa", meaning: "Hello!", ex: "こんにちは、元気？", exSub: "Hello, how are you?" },
+        { word: "おはよう", say: "Ohayō", meaning: "Good morning!", ex: "おはよう、きょうもげんき！", exSub: "Good morning, energetic today!" },
+        { word: "おげんきですか", say: "Ogenki desu ka", meaning: "How are you?", ex: "こんにちは、おげんきですか。", exSub: "Hello, how are you?" }
+      ],
+      [
+        { word: "ありがとう", say: "Arigatō", meaning: "Thank you!", ex: "本当にありがとう！", exSub: "Thank you so much!" },
+        { word: "おねがいします", say: "Onegai shimasu", meaning: "Please", ex: "これをおねがいします。", exSub: "This one, please." },
+        { word: "どういたしまして", say: "Dōitashimashite", meaning: "You're welcome", ex: "ありがとう！ — どういたしまして。", exSub: "Thanks! — You're welcome." }
+      ],
+      [
+        { word: "りんご", say: "Ringo", meaning: "Apple", ex: "赤いりんごが好きです。", exSub: "I like red apples." },
+        { word: "みず", say: "Mizu", meaning: "Water", ex: "みずをのみます。", exSub: "I drink water." },
+        { word: "またあした", say: "Mata ashita", meaning: "See you tomorrow!", ex: "バイバイ、またあした！", exSub: "Bye-bye, see you tomorrow!" }
+      ]
+    ]
+  }
+};
+
+let activeLang = "it";
+let activeStep = 0;
+let activeCard = 0;
+let langQuizAnswered = false;
+
+function enterLanguage(code){
+  activeLang = code;
+  activeStep = 0;
+  activeCard = 0;
+  document.getElementById("languagePickerView").style.display = "none";
+  document.getElementById("languageLessonView").style.display = "block";
+  document.getElementById("langSectionDesc").textContent =
+    "Start from Step 1 and go step by step. Tap All Languages anytime to switch.";
+  updateStepHeaders();
+  document.querySelectorAll(".lesson-step-btn").forEach((b, i) => b.classList.toggle("active", i === 0));
+  renderLessonCard();
+}
+
+function backToLanguages(){
+  document.getElementById("languageLessonView").style.display = "none";
+  document.getElementById("languagePickerView").style.display = "grid";
+  document.getElementById("langSectionDesc").textContent =
+    "Tap a language button below to go inside and start lessons from Step 1.";
+  refreshLangBadges();
+}
+
+function updateStepHeaders(){
+  const done = stats.completed[activeLang] || [];
+  const baseTags = ["Step 1 • Start", "Step 2 • Basics", "Step 3 • Everyday"];
+  [0, 1, 2].forEach((i) => {
+    const tagEl = document.getElementById(`stepTag${i}`);
+    tagEl.textContent = done.includes(i) ? `✅ Step ${i + 1} • Done` : baseTags[i];
+  });
+}
+
+function chooseStep(stepIdx, btnEl){
+  activeStep = stepIdx;
+  activeCard = 0;
+  document.querySelectorAll(".lesson-step-btn").forEach(b => b.classList.remove("active"));
+  if(btnEl) btnEl.classList.add("active");
+  renderLessonCard();
+}
+
+function renderLessonCard(){
+  const course = courses[activeLang];
+  const cards = course.steps[activeStep];
+  const item = cards[activeCard % cards.length];
+
+  document.getElementById("activeLangHeading").textContent = `${course.flag} ${course.name} • STEP ${activeStep + 1}`;
+  document.getElementById("langNameBadge").textContent = course.name;
+  document.getElementById("langTopicBadge").textContent = `STEP ${activeStep + 1} • CARD ${(activeCard % cards.length) + 1} OF ${cards.length}`;
+  document.getElementById("langPhraseText").textContent = item.word;
+  document.getElementById("langPhoneticText").textContent = `Pronunciation: ${item.say}`;
+  document.getElementById("langMeaningText").textContent = item.meaning;
+  document.getElementById("langExampleTarget").textContent = `"${item.ex}"`;
+  document.getElementById("langExampleTrans").textContent = `"${item.exSub}"`;
+
+  renderLangRecall(course, item);
+}
+
+function nextPhrase(){
+  const cards = courses[activeLang].steps[activeStep];
+  activeCard = (activeCard + 1) % cards.length;
+  renderLessonCard();
+}
+
+function prevPhrase(){
+  const cards = courses[activeLang].steps[activeStep];
+  activeCard = (activeCard - 1 + cards.length) % cards.length;
+  renderLessonCard();
+}
+
+function speakCurrentPhrase(){
+  const course = courses[activeLang];
+  const item = course.steps[activeStep][activeCard % course.steps[activeStep].length];
+  if("speechSynthesis" in window){
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(item.word);
+    u.lang = course.voice;
+    u.rate = 0.85;
+    window.speechSynthesis.speak(u);
+  }
+}
+
+function renderLangRecall(course, target){
+  langQuizAnswered = false;
+  document.getElementById("langQuizPrompt").innerHTML = `What does <strong>"${target.word}"</strong> mean?`;
+  const pool = [];
+  course.steps.forEach(s => s.forEach(item => {
+    if(item.meaning !== target.meaning && !pool.includes(item.meaning)) pool.push(item.meaning);
+  }));
+  const opts = [target.meaning, ...pool.slice(0, 3)].sort(() => Math.random() - 0.5);
+  const box = document.getElementById("langQuizOptions");
+  box.innerHTML = "";
+  document.getElementById("langQuizFeedback").textContent = "Tap the matching meaning to complete this step and earn points.";
+
+  opts.forEach(opt => {
+    const b = document.createElement("button");
+    b.className = "quiz-opt";
+    b.textContent = opt;
+    b.onclick = () => {
+      if(langQuizAnswered) return;
+      langQuizAnswered = true;
+      box.querySelectorAll("button").forEach(x => x.disabled = true);
+      const fb = document.getElementById("langQuizFeedback");
+      if(opt === target.meaning){
+        b.classList.add("correct");
+        stats.points += 15;
+        if(!stats.completed[activeLang]) stats.completed[activeLang] = [];
+        if(!stats.completed[activeLang].includes(activeStep)) {
+          stats.completed[activeLang].push(activeStep);
+        }
+        updateTopStats();
+        updateStepHeaders();
+        fb.innerHTML = `<strong class="positive">Step ${activeStep + 1} Checked! +15 points</strong>`;
+      } else {
+        b.classList.add("wrong");
+        box.querySelectorAll("button").forEach(x => { if(x.textContent === target.meaning) x.classList.add("correct"); });
+        fb.innerHTML = `<strong class="negative">Almost!</strong> Meaning: <strong>${target.meaning}</strong>.`;
+      }
+    };
+    box.appendChild(b);
+  });
+}
+
+// 2. QUIZ ARENA
+const quizBanks = {
+  biology: [
+    { q: "Which animal can fly and build nests?", opts: ["Bird", "Fish", "Crab", "Turtle"], ans: 0 },
+    { q: "What do plants need to grow?", opts: ["Water & sunlight", "Candy & soda", "Toy cars", "Plastic bags"], ans: 0 },
+    { q: "Which part of a plant takes in water from soil?", opts: ["Roots", "Hat", "Wheels", "Buttons"], ans: 0 }
+  ],
+  science: [
+    { q: "Which one gives us light in the sky during the day?", opts: ["The Sun", "A pillow", "A spoon", "A shoe"], ans: 0 },
+    { q: "What does water become when it freezes?", opts: ["Ice", "Sand", "Smoke", "Soap"], ans: 0 },
+    { q: "What appears in the sky when sunlight hits rain?", opts: ["A rainbow", "A traffic light", "A submarine", "A toaster"], ans: 0 }
+  ],
+  ai: [
+    { q: "How does AI learn to spot a dog in photos?", opts: ["From many dog examples", "By eating lunch", "By sleeping", "By riding a bike"], ans: 0 },
+    { q: "Who builds and checks AI tools?", opts: ["People", "Clouds", "Rocks", "Bananas"], ans: 0 },
+    { q: "Is AI a real person?", opts: ["No, it is computer software", "Yes, a superhero", "Yes, a puppy", "Yes, a tree"], ans: 0 }
+  ],
+  history: [
+    { q: "Long ago before cars, how did people travel?", opts: ["Walking, boats, or animals", "Rockets", "Subways", "Space shuttles"], ans: 0 },
+    { q: "What is history?", opts: ["Stories from the past", "Tomorrow's weather", "A game score", "A shopping list"], ans: 0 },
+    { q: "What did people write on long before paper?", opts: ["Clay or stone", "Smartphones", "TV remotes", "Plastic cards"], ans: 0 }
+  ]
+};
+
+let currentTopic = "biology";
+let qIndex = 0;
+let roundScore = 0;
+let answeredCurrent = false;
+
+function startQuizRound(){
+  currentTopic = document.getElementById("quizTopic").value;
+  qIndex = 0;
+  roundScore = 0;
+  renderQuestion();
+}
+
+function renderQuestion(){
+  answeredCurrent = false;
+  const list = quizBanks[currentTopic];
+  document.getElementById("quizProgress").textContent = `Question ${Math.min(qIndex + 1, list.length)} / ${list.length}`;
+  document.getElementById("quizRoundScore").textContent = `Round Score: ${roundScore}`;
+  document.getElementById("nextQuizBtn").style.display = "none";
+
+  if(qIndex >= list.length){
+    document.getElementById("quizQuestionText").textContent =
+      `Round Complete! You scored ${roundScore} out of ${list.length * 20} points.`;
+    document.getElementById("quizOptionsBox").innerHTML = "";
+    document.getElementById("quizFeedback").innerHTML = `
+      <span>Great job! Play another round or switch subjects.</span>
+      <button class="primary-btn" onclick="startQuizRound()">Play Again</button>
+    `;
+    return;
+  }
+
+  const item = list[qIndex];
+  document.getElementById("quizQuestionText").textContent = item.q;
+  const optsBox = document.getElementById("quizOptionsBox");
+  optsBox.innerHTML = "";
+
+  item.opts.forEach((optText, idx) => {
+    const b = document.createElement("button");
+    b.className = "quiz-opt";
+    b.textContent = optText;
+    b.onclick = () => selectQuizOption(idx, item.ans, b);
+    optsBox.appendChild(b);
+  });
+
+  document.getElementById("quizFeedback").innerHTML = `
+    <span>Pick the best answer.</span>
+    <button class="secondary-btn" id="nextQuizBtn" onclick="nextQuestion()" style="display:none">Next Question →</button>
+  `;
+}
+
+function selectQuizOption(chosen, correct, btnEl){
+  if(answeredCurrent) return;
+  answeredCurrent = true;
+  const allBtns = Array.from(document.querySelectorAll("#quizOptionsBox .quiz-opt"));
+  allBtns.forEach(b => (b.disabled = true));
+  const fb = document.getElementById("quizFeedback");
+
+  if(chosen === correct){
+    btnEl.classList.add("correct");
+    roundScore += 20;
+    stats.points += 20;
+    updateTopStats();
+    document.getElementById("quizRoundScore").textContent = `Round Score: ${roundScore}`;
+    fb.querySelector("span").innerHTML = `<strong class="positive">Correct! +20 points</strong>`;
+  } else {
+    btnEl.classList.add("wrong");
+    allBtns[correct].classList.add("correct");
+    fb.querySelector("span").innerHTML = `<strong class="negative">Not quite</strong> — correct answer highlighted in green.`;
+  }
+  document.getElementById("nextQuizBtn").style.display = "inline-block";
+}
+
+function nextQuestion(){
+  qIndex++;
+  renderQuestion();
+}
+
+// 3. FILTER & LIBRARY
+const articles = Array.from(document.querySelectorAll(".article"));
+
+function filterCategory(category){
+  document.getElementById("homePage").style.display = "block";
+  document.getElementById("articleDetail").style.display = "none";
+
+  let count = 0;
+  articles.forEach(article => {
+    const match = category === "all" || article.dataset.category === category;
+    article.style.display = match ? "block" : "none";
+    if(match) count++;
+  });
+
+  document.getElementById("resultCount").textContent =
+    category === "all" ? `All articles (${count})` : `${category.toUpperCase()} articles (${count})`;
+  document.getElementById("articles").scrollIntoView({behavior:"smooth"});
+}
+
+articles.forEach(article => {
+  article.addEventListener("click", () => {
+    document.getElementById("homePage").style.display = "none";
+    document.getElementById("articleDetail").style.display = "block";
+    document.getElementById("detailCategory").textContent = article.dataset.category.toUpperCase();
+    document.getElementById("detailTitle").textContent = article.dataset.title;
+    document.getElementById("detailDescription").textContent = article.dataset.description;
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+});
+
+function closeArticle(){
+  document.getElementById("articleDetail").style.display = "none";
+  document.getElementById("homePage").style.display = "block";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+updateTopStats();
+renderQuestion();
+</script>
+
+</body>
+</html>
